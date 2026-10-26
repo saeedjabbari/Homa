@@ -10,7 +10,7 @@ export const initialUserProfile: UserProfile = {
   avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   shift: 'شیفت اداری (کد ۱۱)',
   shiftHours: '۰۸:۰۰ الی ۱۷:۰۰ (شناوری: ۳۰ دقیقه)',
-  supervisorName: 'مهندس بهمن حرفتی',
+  supervisorName: 'مدیریت واحد',
   remainingLeaveDays: '۰۵:۰۹', // ۵ روز و ۹ دقیقه مانده مرخصی استحقاقی
   employmentDate: '۱۴۰۱/۰۱/۰۱',
   isClockedIn: true,
@@ -260,7 +260,7 @@ export const initialRequests: UserRequest[] = [
     reason: 'امور بانکی و پیگیری اسناد رسمی',
     status: 'pending',
     createdAt: '۱۴۰۵/۰۸/۰۴ ۱۰:۱۵',
-    reviewer: 'مهندس بهمن حرفتی',
+    reviewer: 'مدیریت واحد',
   },
   {
     id: 'req-2',
@@ -273,7 +273,7 @@ export const initialRequests: UserRequest[] = [
     reason: 'تکمیل کاتالوگ نمایشگاهی و گزارش نشست خبری گروه اسپوتا',
     status: 'approved',
     createdAt: '۱۴۰۵/۰۸/۰۳ ۰۸:۵۰',
-    reviewer: 'مهندس بهمن حرفتی',
+    reviewer: 'مدیریت واحد',
     reviewComment: 'مورد تایید است.',
   },
   {
@@ -287,7 +287,7 @@ export const initialRequests: UserRequest[] = [
     reason: 'جلسه هماهنگی روابط عمومی در اتاق بازرگانی',
     status: 'approved',
     createdAt: '۱۴۰۵/۰۷/۲۷ ۱۶:۰۰',
-    reviewer: 'مهندس بهمن حرفتی',
+    reviewer: 'مدیریت واحد',
   },
   {
     id: 'req-4',
@@ -312,7 +312,7 @@ export const initialRequests: UserRequest[] = [
     reason: 'امور شخصی خانوادگی',
     status: 'approved',
     createdAt: '۱۴۰۵/۰۶/۲۵ ۱۰:۰۰',
-    reviewer: 'مهندس بهمن حرفتی',
+    reviewer: 'مدیریت واحد',
   },
 ];
 

@@ -13,7 +13,9 @@ import {
   FileSpreadsheet,
   FileCheck2,
   ListTodo,
-  History
+  History,
+  PhoneCall,
+  X
 } from 'lucide-react';
 import { UserProfile, SystemMessage } from '../types/attendance';
 
@@ -24,6 +26,7 @@ interface HeaderProps {
   setActiveTab: (tab: 'dashboard' | 'attendance' | 'requests' | 'kardex' | 'audit') => void;
   onOpenNewRequest: () => void;
   onTogglePunch: () => void;
+  onOpenPhoneDirectory: () => void;
   elapsedTimeString: string;
 }
 
@@ -34,11 +37,45 @@ export const Header: React.FC<HeaderProps> = ({
   setActiveTab,
   onOpenNewRequest,
   onTogglePunch,
+  onOpenPhoneDirectory,
   elapsedTimeString,
 }) => {
   const [showNotifications, setShowNotifications] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const unreadCount = messages.filter(m => !m.read).length;
+
+  const notificationsRef = React.useRef<HTMLDivElement>(null);
+  const userMenuRef = React.useRef<HTMLDivElement>(null);
+
+  // Robust click-outside and Escape key listener for menus
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      if (showNotifications && notificationsRef.current && !notificationsRef.current.contains(target)) {
+        setShowNotifications(false);
+      }
+      if (showUserMenu && userMenuRef.current && !userMenuRef.current.contains(target)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowNotifications(false);
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showNotifications, showUserMenu]);
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200/80 shadow-xs">
@@ -169,21 +206,33 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Right Action Tools & User Profile */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Quick New Request Button */}
             <button
               onClick={onOpenNewRequest}
-              className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3.5 py-2 rounded-2xl text-xs font-bold shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Sparkles className="w-4 h-4" />
               <span>ثبت درخواست جدید</span>
             </button>
 
-            {/* Notifications Button with Legacy "88" badge matching ScreenHunter_196 & 200 */}
-            <div className="relative">
+            {/* Internal Phone Directory Button */}
+            <button
+              onClick={onOpenPhoneDirectory}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200/90 text-xs font-bold transition-all cursor-pointer shadow-2xs hover:scale-[1.02] active:scale-[0.98]"
+              title="دفترچه شماره‌های تلفن داخلی شرکت‌ها"
+            >
+              <PhoneCall className="w-4 h-4 text-orange-600 shrink-0" />
+              <span className="hidden md:inline">شماره‌های داخلی</span>
+            </button>
+
+            {/* Notifications Button with Outside-Click Container */}
+            <div ref={notificationsRef} className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative w-10 h-10 rounded-2xl bg-slate-100 hover:bg-slate-200/80 flex items-center justify-center text-slate-700 transition-colors"
+                className={`relative w-10 h-10 rounded-2xl flex items-center justify-center transition-colors cursor-pointer ${
+                  showNotifications ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700'
+                }`}
                 title="پیام‌های من"
               >
                 <Bell className="w-5 h-5" />
@@ -196,51 +245,54 @@ export const Header: React.FC<HeaderProps> = ({
 
               {/* Notification Popover */}
               {showNotifications && (
-                <>
-                  <div 
-                    className="fixed inset-0 z-40 bg-transparent" 
-                    onClick={() => setShowNotifications(false)} 
-                  />
-                  <div className="absolute left-0 mt-2 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-200 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                      <div className="flex items-center gap-2">
-                        <Bell className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-bold text-slate-900">پیام‌های سیستم و تردد</span>
-                      </div>
+                <div className="absolute left-0 mt-2 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-200 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <Bell className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm font-bold text-slate-900">پیام‌های سیستم و تردد</span>
+                    </div>
+                    <div className="flex items-center gap-2">
                       <span className="text-xs text-blue-600 font-semibold cursor-pointer hover:underline">
                         علامت‌گذاری همه
                       </span>
-                    </div>
-
-                    <div className="divide-y divide-slate-100 max-h-72 overflow-y-auto mt-2 space-y-1">
-                      {messages.map((msg) => (
-                        <div key={msg.id} className="py-2.5 px-2 hover:bg-slate-50 rounded-xl transition-colors">
-                          <div className="flex items-start justify-between gap-2">
-                            <span className={`text-xs font-bold ${msg.status === 'warning' ? 'text-amber-600' : 'text-slate-800'}`}>
-                              {msg.title}
-                            </span>
-                            <span className="text-[10px] text-slate-400 tabular-nums">{msg.time}</span>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-1 line-clamp-2 leading-relaxed">
-                            {msg.content}
-                          </p>
-                          <div className="flex items-center justify-between mt-1 text-[10px] text-slate-400">
-                            <span>فرستنده: {msg.sender}</span>
-                            <span className="tabular-nums">IP: {msg.ip}</span>
-                          </div>
-                        </div>
-                      ))}
+                      <button
+                        onClick={() => setShowNotifications(false)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer"
+                        title="بستن"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
-                </>
+
+                  <div className="divide-y divide-slate-100 max-h-72 overflow-y-auto mt-2 space-y-1">
+                    {messages.map((msg) => (
+                      <div key={msg.id} className="py-2.5 px-2 hover:bg-slate-50 rounded-xl transition-colors">
+                        <div className="flex items-start justify-between gap-2">
+                          <span className={`text-xs font-bold ${msg.status === 'warning' ? 'text-amber-600' : 'text-slate-800'}`}>
+                            {msg.title}
+                          </span>
+                          <span className="text-[10px] text-slate-400 tabular-nums">{msg.time}</span>
+                        </div>
+                        <p className="text-xs text-slate-600 mt-1 line-clamp-2 leading-relaxed">
+                          {msg.content}
+                        </p>
+                        <div className="flex items-center justify-between mt-1 text-[10px] text-slate-400">
+                          <span>فرستنده: {msg.sender}</span>
+                          <span className="tabular-nums">IP: {msg.ip}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
 
             {/* User Profile Card (StaffCentral style) */}
-            <div className="relative">
+            <div ref={userMenuRef} className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200/80 cursor-pointer"
+                className="flex items-center gap-2 p-1 sm:p-1.5 sm:pr-3 rounded-2xl hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200/80 cursor-pointer"
               >
                 <div className="relative">
                   <img
@@ -257,41 +309,43 @@ export const Header: React.FC<HeaderProps> = ({
                 <ChevronDown className="w-4 h-4 text-slate-400" />
               </button>
 
-              {/* User Menu Dropdown with Outside Click Closer */}
+              {/* User Menu Dropdown */}
               {showUserMenu && (
-                <>
-                  <div 
-                    className="fixed inset-0 z-40 bg-transparent" 
-                    onClick={() => setShowUserMenu(false)} 
-                  />
-                  <div className="absolute left-0 mt-2 w-64 bg-white rounded-3xl shadow-2xl border border-slate-200 p-3 z-50 animate-in fade-in slide-in-from-top-2">
-                    <div className="px-3 py-2 border-b border-slate-100 mb-2">
-                      <p className="text-xs text-slate-400 font-medium">پرسنلی شماره: {user.personnelId}</p>
-                      <p className="text-xs font-bold text-slate-800 mt-0.5">{user.department}</p>
-                      <div className="mt-2 bg-emerald-50 border border-emerald-200/60 rounded-xl p-2 text-[11px] text-emerald-800">
-                        <div className="flex justify-between">
-                          <span>مانده مرخصی استحقاقی:</span>
-                          <span className="font-bold">{user.remainingLeaveDays} روز</span>
-                        </div>
+                <div className="absolute left-0 mt-2 w-64 bg-white rounded-3xl shadow-2xl border border-slate-200 p-3 z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="px-3 py-2 border-b border-slate-100 mb-2">
+                    <p className="text-xs text-slate-400 font-medium">پرسنلی شماره: {user.personnelId}</p>
+                    <p className="text-xs font-bold text-slate-800 mt-0.5">{user.department}</p>
+                    <div className="mt-2 bg-emerald-50 border border-emerald-200/60 rounded-xl p-2 text-[11px] text-emerald-800">
+                      <div className="flex justify-between">
+                        <span>مانده مرخصی استحقاقی:</span>
+                        <span className="font-bold">{user.remainingLeaveDays} روز</span>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="space-y-1 text-xs">
-                      <button 
-                        onClick={() => { setActiveTab('requests'); setShowUserMenu(false); }}
-                        className="w-full text-right px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-2 font-medium cursor-pointer"
-                      >
-                        <ListTodo className="w-4 h-4 text-slate-400" />
-                        <span>پیگیری درخواست‌های من</span>
-                      </button>
-                      <button 
-                        onClick={() => { setActiveTab('attendance'); setShowUserMenu(false); }}
-                        className="w-full text-right px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-2 font-medium cursor-pointer"
-                      >
-                        <FileSpreadsheet className="w-4 h-4 text-slate-400" />
-                        <span>مشاهده ریز کارکرد ماهیانه</span>
-                      </button>
-                    </div>
+                  <div className="space-y-1 text-xs">
+                    <button 
+                      onClick={() => { setActiveTab('requests'); setShowUserMenu(false); }}
+                      className="w-full text-right px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-2 font-medium cursor-pointer"
+                    >
+                      <ListTodo className="w-4 h-4 text-slate-400" />
+                      <span>پیگیری درخواست‌های من</span>
+                    </button>
+                    <button 
+                      onClick={() => { setActiveTab('attendance'); setShowUserMenu(false); }}
+                      className="w-full text-right px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-2 font-medium cursor-pointer"
+                    >
+                      <FileSpreadsheet className="w-4 h-4 text-slate-400" />
+                      <span>مشاهده ریز کارکرد ماهیانه</span>
+                    </button>
+                    <button 
+                      onClick={() => { onOpenPhoneDirectory(); setShowUserMenu(false); }}
+                      className="w-full text-right px-3 py-2 rounded-xl text-orange-700 hover:bg-orange-50 flex items-center gap-2 font-bold cursor-pointer"
+                    >
+                      <PhoneCall className="w-4 h-4 text-orange-500" />
+                      <span>دفترچه شماره‌های داخلی</span>
+                    </button>
+                  </div>
 
                     <div className="pt-2 mt-2 border-t border-slate-100">
                       <button className="w-full text-right px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 flex items-center gap-2 text-xs font-semibold cursor-pointer">
@@ -300,7 +354,6 @@ export const Header: React.FC<HeaderProps> = ({
                       </button>
                     </div>
                   </div>
-                </>
               )}
             </div>
 

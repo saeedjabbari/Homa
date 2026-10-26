@@ -15,11 +15,13 @@ import { UserProfile } from '../types/attendance';
 interface UserProfileCardProps {
   user: UserProfile;
   onOpenLeaveKardex: () => void;
+  onOpenPhoneDirectory?: () => void;
 }
 
 export const UserProfileCard: React.FC<UserProfileCardProps> = ({
   user,
   onOpenLeaveKardex,
+  onOpenPhoneDirectory,
 }) => {
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 space-y-5">
@@ -98,19 +100,27 @@ export const UserProfileCard: React.FC<UserProfileCardProps> = ({
         </div>
       </div>
 
-      {/* Direct Supervisor & Fast Contact */}
+      {/* Fast Actions Bottom Bar */}
       <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-        <div className="space-y-0.5">
-          <span className="text-[11px] text-slate-400 block">سرپرست مستقیم تاییدات:</span>
-          <span className="font-bold text-slate-800">{user.supervisorName}</span>
+        <span className="text-[11px] text-slate-500 font-medium">وضعیت کاربری: تاییدشده و فعال</span>
+        <div className="flex items-center gap-2">
+          {onOpenPhoneDirectory && (
+            <button
+              onClick={onOpenPhoneDirectory}
+              className="text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-xl font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer border border-emerald-200/60"
+            >
+              <PhoneCall className="w-3.5 h-3.5" />
+              <span>شماره‌های داخلی</span>
+            </button>
+          )}
+          <button
+            onClick={onOpenLeaveKardex}
+            className="text-blue-600 hover:text-blue-700 bg-blue-50/80 hover:bg-blue-100/80 px-2.5 py-1 rounded-xl font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer border border-blue-200/50"
+          >
+            <span>سوابق کاردکس</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </button>
         </div>
-        <button
-          onClick={onOpenLeaveKardex}
-          className="text-blue-600 hover:text-blue-700 font-bold text-xs flex items-center gap-1 cursor-pointer"
-        >
-          <span>سوابق کاردکس</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </button>
       </div>
 
     </div>

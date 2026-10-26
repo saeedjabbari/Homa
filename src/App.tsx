@@ -25,6 +25,9 @@ import {
   RequestModal 
 } from './components/RequestModal';
 import { 
+  PhoneDirectoryModal 
+} from './components/PhoneDirectoryModal';
+import { 
   RequestsWorkflowView 
 } from './components/RequestsWorkflowView';
 import { 
@@ -70,6 +73,7 @@ export default function App() {
   // Modals
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+  const [isPhoneDirectoryOpen, setIsPhoneDirectoryOpen] = useState(false);
 
   // Pre-fill state for Request Modal
   const [requestTargetDate, setRequestTargetDate] = useState('۱۴۰۵/۰۸/۰۴');
@@ -216,6 +220,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         onOpenNewRequest={() => handleOpenRequest()}
         onTogglePunch={handleTogglePunch}
+        onOpenPhoneDirectory={() => setIsPhoneDirectoryOpen(true)}
         elapsedTimeString={formatElapsed(elapsedSeconds)}
       />
 
@@ -256,6 +261,7 @@ export default function App() {
               <UserProfileCard
                 user={user}
                 onOpenLeaveKardex={() => setActiveTab('kardex')}
+                onOpenPhoneDirectory={() => setIsPhoneDirectoryOpen(true)}
               />
 
               <CalendarCard
@@ -318,6 +324,12 @@ export default function App() {
         onSubmitRequest={handleSubmitNewRequest}
         initialDate={requestTargetDate}
         initialType={requestTargetType}
+      />
+
+      {/* MODAL 3: Internal Phone Directory Modal */}
+      <PhoneDirectoryModal
+        isOpen={isPhoneDirectoryOpen}
+        onClose={() => setIsPhoneDirectoryOpen(false)}
       />
 
     </div>
