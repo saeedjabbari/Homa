@@ -207,14 +207,6 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Right Action Tools & User Profile */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Quick New Request Button */}
-            <button
-              onClick={onOpenNewRequest}
-              className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3.5 py-2 rounded-2xl text-xs font-bold shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>ثبت درخواست جدید</span>
-            </button>
 
             {/* Internal Phone Directory Button */}
             <button
