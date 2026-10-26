@@ -16,7 +16,8 @@ import {
 import { 
   phoneDirectoryData, 
   directoryCompanies, 
-  PhoneDirectoryItem 
+  PhoneDirectoryItem,
+  CompanyKey
 } from '../data/phoneDirectory';
 
 interface PhoneDirectoryModalProps {
@@ -37,7 +38,7 @@ export const PhoneDirectoryModal: React.FC<PhoneDirectoryModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [selectedCompany, setSelectedCompany] = useState<'all' | 'holding' | 'mehvarsazan' | 'qatehsazan'>('all');
+  const [selectedCompany, setSelectedCompany] = useState<'all' | CompanyKey>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
@@ -103,9 +104,10 @@ export const PhoneDirectoryModal: React.FC<PhoneDirectoryModalProps> = ({
   const counts = useMemo(() => {
     return {
       all: phoneDirectoryData.length,
-      holding: phoneDirectoryData.filter(i => i.companyKey === 'holding').length,
+      sepand: phoneDirectoryData.filter(i => i.companyKey === 'sepand').length,
       mehvarsazan: phoneDirectoryData.filter(i => i.companyKey === 'mehvarsazan').length,
-      qatehsazan: phoneDirectoryData.filter(i => i.companyKey === 'qatehsazan').length,
+      tormozsazan: phoneDirectoryData.filter(i => i.companyKey === 'tormozsazan').length,
+      ghetesazan: phoneDirectoryData.filter(i => i.companyKey === 'ghetesazan').length,
     };
   }, []);
 
@@ -232,11 +234,15 @@ export const PhoneDirectoryModal: React.FC<PhoneDirectoryModalProps> = ({
               {filteredItems.map((item) => {
                 const isCopied = copiedId === item.id;
                 const companyBadgeColor = 
-                  item.companyKey === 'holding' 
-                    ? 'bg-orange-50 text-orange-700 border-orange-200/60'
+                  item.companyKey === 'sepand' 
+                    ? 'bg-amber-50 text-amber-800 border-amber-200/70'
                     : item.companyKey === 'mehvarsazan'
-                    ? 'bg-blue-50 text-blue-700 border-blue-200/60'
-                    : 'bg-emerald-50 text-emerald-700 border-emerald-200/60';
+                    ? 'bg-blue-50 text-blue-800 border-blue-200/70'
+                    : item.companyKey === 'tormozsazan'
+                    ? 'bg-rose-50 text-rose-800 border-rose-200/70'
+                    : 'bg-emerald-50 text-emerald-800 border-emerald-200/70';
+
+                const hasExtension = item.extension && item.extension !== 'بدون شماره';
 
                 return (
                   <div
@@ -270,32 +276,38 @@ export const PhoneDirectoryModal: React.FC<PhoneDirectoryModalProps> = ({
                       <div className="flex items-center gap-1.5">
                         <Phone className="w-3.5 h-3.5 text-slate-400" />
                         <span className="text-xs text-slate-500 font-medium">داخلی:</span>
-                        <span className="text-sm font-black text-slate-900 tracking-wider tabular-nums font-mono">
+                        <span className={`text-sm font-black tracking-wider ${hasExtension ? 'text-slate-900 tabular-nums font-mono' : 'text-slate-400 text-xs font-normal'}`}>
                           {item.extension}
                         </span>
                       </div>
 
-                      <button
-                        onClick={() => handleCopy(item.id, item.extension)}
-                        className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
-                          isCopied
-                            ? 'bg-emerald-500 text-white border-emerald-500 shadow-xs'
-                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200 shadow-2xs'
-                        }`}
-                        title="کپی شماره داخلی"
-                      >
-                        {isCopied ? (
-                          <>
-                            <Check className="w-3.5 h-3.5" />
-                            <span>کپی شد</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5 text-slate-400" />
-                            <span>کپی</span>
-                          </>
-                        )}
-                      </button>
+                      {hasExtension ? (
+                        <button
+                          onClick={() => handleCopy(item.id, item.extension)}
+                          className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                            isCopied
+                              ? 'bg-emerald-500 text-white border-emerald-500 shadow-xs'
+                              : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200 shadow-2xs'
+                          }`}
+                          title="کپی شماره داخلی"
+                        >
+                          {isCopied ? (
+                            <>
+                              <Check className="w-3.5 h-3.5" />
+                              <span>کپی شد</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-slate-400" />
+                              <span>کپی</span>
+                            </>
+                          )}
+                        </button>
+                      ) : (
+                        <span className="text-[10px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
+                          فاقد داخلی
+                        </span>
+                      )}
                     </div>
                   </div>
                 );
