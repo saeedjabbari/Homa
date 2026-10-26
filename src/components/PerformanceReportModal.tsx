@@ -160,7 +160,7 @@ export const PerformanceReportModal: React.FC<PerformanceReportModalProps> = ({
           <div className="text-xs font-bold text-slate-800 mb-3 flex items-center justify-between">
             <span>ریز محاسبات روز به روز ماه آبان:</span>
             <span className="text-slate-400 font-normal text-[11px]">
-              ثبت‌شده در دیتابیس حضور و غیاب کارا
+              ثبت‌شده در دیتابیس حضور و غیاب هما
             </span>
           </div>
 

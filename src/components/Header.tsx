@@ -133,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="flex items-center gap-2">
                 <span className="text-base font-black tracking-tight text-slate-900 whitespace-nowrap">هلدینگ اسپوتا</span>
                 <span className="text-[10px] bg-orange-100 text-orange-700 font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap border border-orange-200/60">
-                  سامانه کارا
+                  سامانه هما
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 font-medium whitespace-nowrap">

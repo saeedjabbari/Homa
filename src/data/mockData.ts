@@ -446,7 +446,7 @@ export const initialMessages: SystemMessage[] = [
     id: 'msg-1',
     row: 1,
     title: 'ورود موفق به سیستم',
-    sender: 'سیستم هوشمند کارا',
+    sender: 'سیستم هوشمند هما',
     time: '۱۴۰۵/۰۸/۰۴ ۰۷:۴۶',
     content: 'ورود موفق به پرتال حضور و غیاب از آدرس IP مجاز سازمان: 10.20.2.196',
     ip: '10.20.2.196',

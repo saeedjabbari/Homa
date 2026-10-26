@@ -55,7 +55,7 @@ export const AuditLogsView: React.FC<AuditLogsViewProps> = ({ logs }) => {
 
         <div className="flex items-center gap-2 text-xs bg-slate-100 px-3 py-1.5 rounded-xl text-slate-600">
           <Server className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-          <span>سرور مرکزی کارا: فعال و آنلاین</span>
+          <span>سرور مرکزی هما: فعال و آنلاین</span>
         </div>
       </div>
 
