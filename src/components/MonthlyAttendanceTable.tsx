@@ -327,8 +327,13 @@ export const MonthlyAttendanceTable: React.FC<MonthlyAttendanceTableProps> = ({
 
                     {/* Popover Menu */}
                     {activeMenuId === record.id && (
-                      <div className="absolute left-4 top-10 w-48 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-30 text-right space-y-1 animate-in fade-in zoom-in-95">
-                        <div className="text-[10px] font-bold text-slate-400 px-2 py-1 border-b border-slate-100">
+                      <>
+                        <div 
+                          className="fixed inset-0 z-20 bg-transparent" 
+                          onClick={() => setActiveMenuId(null)} 
+                        />
+                        <div className="absolute left-4 top-10 w-48 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-30 text-right space-y-1 animate-in fade-in zoom-in-95">
+                          <div className="text-[10px] font-bold text-slate-400 px-2 py-1 border-b border-slate-100">
                           ثبت مجوز برای {record.date}:
                         </div>
                         <button
@@ -372,7 +377,8 @@ export const MonthlyAttendanceTable: React.FC<MonthlyAttendanceTableProps> = ({
                           <span>تاخیر موجه سرویس</span>
                         </button>
                       </div>
-                    )}
+                    </>
+                  )}
                   </td>
                 </tr>
               );

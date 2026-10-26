@@ -8,8 +8,8 @@ export const initialUserProfile: UserProfile = {
   personnelId: '۳۰۲۱۶',
   nationalId: '۰۰۷۶۵۴۳۲۱۰',
   avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  shift: 'شیفت عادی اداری (کد ۱۱)',
-  shiftHours: '۰۷:۳۰ الی ۱۶:۳۰ (شناوری: ۴۵ دقیقه)',
+  shift: 'شیفت اداری (کد ۱۱)',
+  shiftHours: '۰۸:۰۰ الی ۱۷:۰۰ (شناوری: ۳۰ دقیقه)',
   supervisorName: 'مهندس بهمن حرفتی',
   remainingLeaveDays: '۰۵:۰۹', // ۵ روز و ۹ دقیقه مانده مرخصی استحقاقی
   employmentDate: '۱۴۰۱/۰۱/۰۱',

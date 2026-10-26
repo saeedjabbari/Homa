@@ -34,9 +34,6 @@ import {
   AuditLogsView 
 } from './components/AuditLogsView';
 import { 
-  LegacyComparisonModal 
-} from './components/LegacyComparisonModal';
-import { 
   initialUserProfile, 
   initialAttendanceRecords, 
   initialRequests, 
@@ -73,7 +70,6 @@ export default function App() {
   // Modals
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
-  const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
 
   // Pre-fill state for Request Modal
   const [requestTargetDate, setRequestTargetDate] = useState('۱۴۰۵/۰۸/۰۴');
@@ -219,7 +215,6 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenNewRequest={() => handleOpenRequest()}
-        onOpenComparison={() => setIsComparisonModalOpen(true)}
         onTogglePunch={handleTogglePunch}
         elapsedTimeString={formatElapsed(elapsedSeconds)}
       />
@@ -316,19 +311,13 @@ export default function App() {
         records={records}
       />
 
-      {/* MODAL 2: Request Submission Modal (Replaces old hidden right-click) */}
+      {/* MODAL 2: Request Submission Modal */}
       <RequestModal
         isOpen={isRequestModalOpen}
         onClose={() => setIsRequestModalOpen(false)}
         onSubmitRequest={handleSubmitNewRequest}
         initialDate={requestTargetDate}
         initialType={requestTargetType}
-      />
-
-      {/* MODAL 3: Legacy vs Modern Comparison Showcase */}
-      <LegacyComparisonModal
-        isOpen={isComparisonModalOpen}
-        onClose={() => setIsComparisonModalOpen(false)}
       />
 
     </div>
