@@ -1,0 +1,8 @@
+{
+  "name": "سامانه هوشمند حضور و غیاب و منابع انسانی اسپوتا | Spoota HR",
+  "description": "سامانه جامع و مدرن مدیریت تردد، کارت تردد، ثبت مرخصی ساعتی و روزانه، اضافه کاری، کاردکس استحقاقی و گردش کار تاییدات سازمانی با تجربه کاربری پیشرفته و طراحی Bento UI",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
